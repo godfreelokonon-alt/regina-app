@@ -3,127 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regina OS : Pensées & Foi</title>
+    <title>Regina Vision : Executive OS</title>
     <style>
-        :root { --primary: #00796b; --urgent: #d32f2f; --bg: #f0f4f4; --gold: #b8860b; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: #333; }
+        :root { 
+            --gold: #c5a059; --dark: #1a2a2a; --teal: #004d40; 
+            --soft-bg: #f8fafb; --white: #ffffff; --urgent: #ff5252;
+        }
         
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        
-        /* Style du verset */
-        .bible-box { background: #fff; border-bottom: 3px solid var(--gold); padding: 15px; text-align: center; font-style: italic; font-size: 0.95rem; color: #444; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
-        .reference { display: block; margin-top: 5px; font-weight: bold; color: var(--gold); font-size: 0.8rem; text-transform: uppercase; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background: var(--soft-bg); margin: 0; color: var(--dark);
+            padding-bottom: 80px; overflow-x: hidden;
+        }
 
-        .search-container { padding: 15px; max-width: 600px; margin: 0 auto; }
-        #searchBar { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #ccc; box-sizing: border-box; outline: none; }
+        /* HEADER PROPRIÉTAIRE */
+        .owner-header {
+            background: linear-gradient(135deg, var(--teal), var(--dark));
+            color: white; padding: 40px 25px;
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .profile-section { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 60px; height: 60px; background: var(--gold); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; border: 3px solid rgba(255,255,255,0.2);
+        }
+        .welcome-text h2 { margin: 0; font-size: 1.4rem; letter-spacing: -0.5px; }
+        .welcome-text p { margin: 0; font-size: 0.85rem; opacity: 0.8; }
 
-        #list { max-width: 600px; margin: 0 auto; padding: 10px; padding-bottom: 120px; }
-        .card { background: white; border-radius: 15px; padding: 18px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); border-left: 8px solid #ccc; }
-        .card.is-urgent { border-left-color: var(--urgent); background: #fff8f8; }
-        
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px; font-size: 0.75rem; color: #888; }
-        
-        .fab-container { position: fixed; bottom: 90px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .fab { background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        
-        footer { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; text-align: center; border-top: 1px solid #ddd; font-size: 0.7rem; }
+        /* BIBLE BOX MODERNE */
+        .bible-card {
+            background: var(--white); margin: -25px 20px 20px;
+            padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            text-align: center; border: 1px solid rgba(197, 160, 89, 0.2);
+        }
+        .verse-txt { font-style: italic; color: #444; font-size: 0.95rem; line-height: 1.4; }
+        .verse-ref { display: block; margin-top: 8px; color: var(--gold); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+
+        /* NAVIGATION PAR ONGLETS */
+        .tab-content { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
+        .active-tab { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LOOK DES CARTES */
+        .note-card {
+            background: var(--white); border-radius: 22px; padding: 20px;
+            margin-bottom: 15px; border: 1px solid #edf2f7;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02); position: relative;
+        }
+        .urgent-line { position: absolute; left: 0; top: 20%; bottom: 20%; width: 5px; background: var(--urgent); border-radius: 0 5px 5px 0; }
+
+        /* CALENDRIER INNOVANT */
+        .calendar-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+            background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .cal-day { height: 45px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border-radius: 12px; cursor: pointer; }
+        .cal-header { font-weight: 800; color: var(--gold); }
+        .today { background: var(--teal); color: white; font-weight: bold; }
+
+        /* BARRE DE NAVIGATION BASSE */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #eee; z-index: 2000;
+        }
+        .nav-item { border: none; background: none; color: #999; display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
+        .nav-item.active { color: var(--teal); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
+
+        /* BOUTON AJOUTER */
+        .add-btn {
+            position: fixed; bottom: 85px; right: 20px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--teal); color: white; border: none;
+            font-size: 24px; box-shadow: 0 10px 20px rgba(0,77,64,0.3); z-index: 1000;
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 style="margin:0; font-size: 1.4rem;">🙏 Regina : Pensées & Foi</h1>
-</header>
-
-<div class="bible-box" id="bibleBox">
-    <span id="verseText">"Tout est possible à celui qui croit."</span>
-    <span class="reference" id="verseRef">Marc 9:23</span>
+<div class="owner-header">
+    <div class="profile-section">
+        <div class="avatar">👑</div>
+        <div class="welcome-text">
+            <p>Heureux de vous voir,</p>
+            <h2>Mme Regina LOKONON</h2>
+        </div>
+    </div>
 </div>
 
-<div class="search-container">
-    <input type="text" id="searchBar" placeholder="🔍 Rechercher dans vos notes..." onkeyup="filtrer()">
+<div class="bible-card">
+    <div id="verseBox" class="verse-txt">"Tout est possible à celui qui croit."</div>
+    <div id="refBox" class="verse-ref">Marc 9:23</div>
 </div>
 
-<div id="list"></div>
-
-<div class="fab-container">
-    <button class="fab" onclick="ajouter(true)" style="background: var(--urgent); font-size: 14px; font-weight: bold;">URGENT</button>
-    <button class="fab" onclick="ajouter(false)">+</button>
+<div id="notes-tab" class="tab-content active-tab">
+    <input type="text" id="searchBar" placeholder="🔍 Rechercher dans votre vision..." 
+           style="width:100%; padding:15px; border-radius:15px; border:none; margin-bottom:20px; box-shadow:0 4px 10px rgba(0,0,0,0.03);" onkeyup="filtrer()">
+    <div id="list"></div>
 </div>
 
-<footer>
-    <strong>DESIGNED BY GODFREE LOKONON</strong><br>
-    "Confie tes œuvres à l'Éternel, et tes projets réussiront." — Pr 16:3
-</footer>
+<div id="calendar-tab" class="tab-content">
+    <h3 style="margin-top:0;">📅 Agenda Stratégique</h3>
+    <div class="calendar-grid" id="calendarGrid">
+        </div>
+    <div style="margin-top:20px; padding:20px; background:white; border-radius:20px; color:#666; font-size:0.9rem;">
+        <strong>Note d'Expert :</strong> Cette vue calendrier vous permet de projeter vos acquisitions d'hectares dans le temps.
+    </div>
+</div>
+
+<button class="add-btn" onclick="ajouter()">+</button>
+
+<nav class="nav-bar">
+    <button class="nav-item active" onclick="switchTab('notes-tab', this)">
+        <span class="nav-icon">📝</span> Notes
+    </button>
+    <button class="nav-item" onclick="switchTab('calendar-tab', this)">
+        <span class="nav-icon">📅</span> Calendrier
+    </button>
+</nav>
 
 <script>
+    let bdd = JSON.parse(localStorage.getItem('regina_v6')) || [];
     const versets = [
-        {t: "Tout est possible à celui qui croit.", r: "Marc 9:23"},
-        {t: "Je puis tout par celui qui me fortifie.", r: "Philippiens 4:13"},
-        {t: "Ne t'inquiète de rien, mais en toute chose fais connaître tes besoins à Dieu.", r: "Phil 4:6"},
-        {t: "Le Seigneur est mon berger, je ne manquerai de rien.", r: "Psaume 23:1"},
-        {t: "Que tout ce que vous faites se fasse avec amour.", r: "1 Cor 16:14"},
-        {t: "Soyez forts et courageux, ne craignez point.", r: "Deutéronome 31:6"},
-        {t: "La joie du Seigneur est votre force.", r: "Néhémie 8:10"}
+        {t: "Je puis tout par celui qui me fortifie.", r: "Phil 4:13"},
+        {t: "L'Éternel est mon berger, je ne manquerai de rien.", r: "Psaume 23"},
+        {t: "Confie tes projets à Dieu et ils réussiront.", r: "Prov 16:3"},
+        {t: "La foi est une ferme assurance des choses qu'on espère.", r: "Héb 11:1"}
     ];
 
-    let bdd = JSON.parse(localStorage.getItem('regina_v4')) || [];
-
-    function changerVerset() {
-        const v = versets[Math.floor(Math.random() * versets.length)];
-        document.getElementById('verseText').innerText = `"${v.t}"`;
-        document.getElementById('verseRef').innerText = v.r;
+    function switchTab(tabId, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active-tab');
+        el.classList.add('active');
     }
 
-    function ajouter(urgent) {
-        let txt = prompt(urgent ? "🚨 URGENCE :" : "Note pour Regina :");
-        if (txt && txt.trim() !== "") {
-            bdd.unshift({
-                id: Date.now(),
-                texte: txt,
-                urgent: urgent,
-                date: new Date().toLocaleString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
-            });
-            sauver();
+    function ajouter() {
+        let txt = prompt("Vision ou Tâche pour aujourd'hui ?");
+        if (txt) {
+            bdd.unshift({ id: Date.now(), texte: txt, date: new Date().toLocaleDateString('fr-FR') });
+            localStorage.setItem('regina_v6', JSON.stringify(bdd));
             afficher();
-            changerVerset(); // Un nouveau verset à chaque note !
+            const v = versets[Math.floor(Math.random()*versets.length)];
+            document.getElementById('verseBox').innerText = `"${v.t}"`;
+            document.getElementById('refBox').innerText = v.r;
         }
     }
 
-    function supprimer(id) {
-        if(confirm("Supprimer ?")) {
-            bdd = bdd.filter(i => i.id !== id);
-            sauver();
-            afficher();
-        }
-    }
-
-    function filtrer() {
-        afficher(document.getElementById('searchBar').value.toLowerCase());
-    }
-
-    function sauver() { localStorage.setItem('regina_v4', JSON.stringify(bdd)); }
-
-    function afficher(filtre = "") {
+    function afficher() {
         const zone = document.getElementById('list');
-        let data = bdd.filter(i => i.texte.toLowerCase().includes(filtre));
-        zone.innerHTML = data.map(item => `
-            <div class="card ${item.urgent ? 'is-urgent' : ''}">
-                <div style="display:flex; justify-content: ${item.urgent ? 'space-between' : 'flex-end'}; margin-bottom:10px;">
-                    ${item.urgent ? '<span style="background:red; color:white; font-size:0.6rem; padding:2px 6px; border-radius:5px; font-weight:bold;">URGENT</span>' : ''}
-                    <span style="font-size:0.6rem; color:#ccc;">${item.id.toString().slice(-4)}</span>
-                </div>
-                <span style="font-size:1.1rem; display:block; margin-bottom:15px;">${item.texte}</span>
-                <div class="card-footer">
-                    <span>📅 ${item.date}</span>
-                    <button onclick="supprimer(${item.id})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">EFFACER</button>
-                </div>
+        zone.innerHTML = bdd.map(item => `
+            <div class="note-card">
+                <div style="font-weight:600; margin-bottom:10px;">${item.texte}</div>
+                <div style="font-size:0.7rem; color:#999;">📅 ${item.date}</div>
             </div>
         `).join('');
     }
 
-    // Au démarrage
-    changerVerset();
+    function buildCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+        let html = days.map(d => `<div class="cal-day cal-header">${d}</div>`).join('');
+        for(let i=1; i<=31; i++) {
+            let isToday = i === new Date().getDate() ? 'today' : '';
+            html += `<div class="cal-day ${isToday}">${i}</div>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    buildCalendar();
     afficher();
 </script>
 </body>
