@@ -3,210 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regina Vision : Executive OS</title>
+    <title>Regina Vision : The Final OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --gold: #c5a059; --dark: #1a2a2a; --teal: #004d40; 
-            --white: #ffffff; --urgent: #ff5252; --glass: rgba(255, 255, 255, 0.85);
+            --gold: #c5a059; --dark: #0a1111; --teal: #004d40; 
+            --glass: rgba(255, 255, 255, 0.82); --accent: #1a2a2a;
         }
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f0f4f4; /* Fond de secours */
-            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000'); /* Jolie image de terres/vision */
-            background-size: cover; background-position: center; background-attachment: fixed;
-            margin: 0; color: var(--dark);
-            padding-bottom: 100px; overflow-x: hidden;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover fixed;
+            margin: 0; color: var(--dark); padding-bottom: 100px;
         }
 
-        /* EFFET GLASSMORPHISM GÉNÉRAL */
-        .glass-panel {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
+        .glass { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-        /* HEADER PROPRIÉTAIRE HAUT DE GAMME */
-        .owner-header {
-            background: linear-gradient(135deg, rgba(0, 77, 64, 0.9), rgba(26, 42, 42, 0.9));
-            color: white; padding: 50px 30px 60px;
-            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
-            text-align: left;
+        /* HEADER LUXE */
+        .header-pro {
+            background: linear-gradient(135deg, rgba(0, 77, 64, 0.95), rgba(10, 17, 17, 0.95));
+            color: white; padding: 60px 30px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
         }
-        .profile-section { display: flex; align-items: center; gap: 20px; }
-        .avatar { 
-            width: 70px; height: 70px; background: rgba(255,255,255,0.1); 
-            border-radius: 25px; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
-        }
-        .welcome-text h2 { margin: 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; }
-        .welcome-text p { margin: 0; font-size: 0.9rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .avatar-crown { width: 70px; height: 70px; background: rgba(255,255,255,0.1); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 30px; border: 1px solid rgba(255,255,255,0.3); }
 
-        /* CARTE BIBLE "PONT" */
-        .bible-card {
-            margin: -35px 25px 30px; padding: 25px; border-radius: 25px;
-            text-align: center; border: 1px solid rgba(197, 160, 89, 0.3);
-        }
-        .verse-txt { font-style: italic; color: #444; font-size: 1rem; line-height: 1.5; font-weight: 500; }
-        .verse-ref { display: block; margin-top: 10px; color: var(--gold); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* ONGLETS ET CONTENU */
-        .tab-content { display: none; padding: 0 25px; animation: fadeIn 0.5s ease; }
-        .active-tab { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* DESIGN DES CARTES DE NOTES */
-        .vision-card {
-            border-radius: 25px; padding: 25px; margin-bottom: 20px;
-            border: 1px solid rgba(237, 242, 247, 0.5);
-            position: relative; transition: 0.3s;
-        }
-        .vision-card:hover { transform: translateY(-5px) scale(1.01); }
-        .urgent-tag { position: absolute; top: 15px; right: 15px; background: var(--urgent); color: white; font-size: 0.65rem; padding: 4px 10px; border-radius: 10px; font-weight: 800; text-transform: uppercase; }
-
-        /* BARRE DE NAVIGATION MODERNE */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 85px;
-            background: rgba(255,255,255,0.92); backdrop-filter: blur(15px);
+        /* NAVIGATION BASSE */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 90px;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
             display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid #eee; z-index: 2000;
-            border-top-left-radius: 30px; border-top-right-radius: 30px;
+            border-top-left-radius: 35px; border-top-right-radius: 35px; z-index: 2000;
         }
-        .nav-item { border: none; background: none; color: #bbb; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--teal); }
-        .nav-icon { font-size: 1.7rem; margin-bottom: 5px; transition: 0.3s; }
-        .nav-item.active .nav-icon { transform: translateY(-3px); }
+        .nav-btn { border: none; background: none; color: #aaa; font-size: 0.65rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .nav-btn.active { color: var(--teal); }
+        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 5px; }
 
-        /* BOUTON AJOUTER FLOTTANT */
-        .add-btn {
-            position: fixed; bottom: 105px; right: 25px;
-            width: 65px; height: 65px; border-radius: 22px;
-            background: var(--teal); color: white; border: none;
-            font-size: 30px; box-shadow: 0 10px 30px rgba(0,77,64,0.4);
-            z-index: 1000; cursor: pointer; transition: 0.3s;
-        }
-        .add-btn:hover { transform: scale(1.05); }
+        /* CONTENU */
+        .tab-pane { display: none; padding: 25px; animation: fadeInUp 0.5s ease; }
+        .active-tab { display: block; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CALENDRIER EXPERT */
+        .cal-box { padding: 20px; border-radius: 30px; }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: 800; color: var(--teal); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .cal-day.today { background: var(--teal); color: white; box-shadow: 0 5px 15px rgba(0,77,64,0.3); }
+
+        /* CARTES VISION */
+        .vision-card { border-radius: 25px; padding: 25px; margin-bottom: 20px; border-left: 8px solid var(--teal); }
+
+        .add-float { position: fixed; bottom: 110px; right: 25px; width: 65px; height: 65px; border-radius: 22px; background: var(--teal); color: white; border: none; font-size: 30px; box-shadow: 0 10px 25px rgba(0,77,64,0.4); z-index: 1000; }
     </style>
 </head>
 <body>
 
-<div class="owner-header">
-    <div class="profile-section">
-        <div class="avatar">👑</div>
-        <div class="welcome-text">
-            <p>Propriété exclusive</p>
-            <h2>Mme Regina LOKONON</h2>
+<div class="header-pro">
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div class="avatar-crown">👑</div>
+        <div>
+            <p style="margin:0; color: var(--gold); font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Executive OS</p>
+            <h2 style="margin:0; font-size: 1.6rem;">Mme Regina LOKONON</h2>
         </div>
     </div>
 </div>
 
-<div class="bible-card glass-panel">
-    <div id="verseBox" class="verse-txt">"Confie tes projets à l'Éternel, et ils réussiront."</div>
-    <div id="refBox" class="verse-ref">Proverbes 16:3</div>
+<div id="view-vision" class="tab-pane active-tab">
+    <h3 style="font-weight: 800;">📝 Vision & Projets</h3>
+    <div id="vision-list"></div>
 </div>
 
-<div id="notes-tab" class="tab-content active-tab">
-    <h3 style="font-weight: 800; margin-bottom: 25px;">📝 Vision & Agenda</h3>
-    <div id="notes-list"></div>
-</div>
-
-<div id="strat-tab" class="tab-content">
-    <h3 style="font-weight: 800; margin-bottom: 25px;">📊 Stratégie & Objectifs</h3>
-    <div class="vision-card glass-panel" style="border-left: 6px solid var(--gold);">
-        <div style="font-weight:700; font-size: 1.1rem; color: var(--teal);">Acquisition d'Hectares</div>
-        <p style="font-size: 0.9rem; color: #666; margin: 10px 0;">Objectif de l'année 2026 : Finaliser l'achat des 10 premiers hectares.</p>
-        <div style="background: #eee; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 15px;">
-            <div style="background: var(--gold); width: 35%; height: 100%;"></div>
+<div id="view-calendar" class="tab-pane">
+    <div class="cal-box glass">
+        <div class="cal-header">
+            <button onclick="moveMonth(-1)" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">❮</button>
+            <span id="monthTitle">Mars 2026</span>
+            <button onclick="moveMonth(1)" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">❯</button>
         </div>
-        <span style="font-size:0.7rem; color:#999; display:block; margin-top:5px;">Progression : 35%</span>
+        <div class="cal-grid" id="calendarGrid"></div>
     </div>
 </div>
 
-<button class="add-btn" onclick="ajouterNote()">+</button>
+<div id="view-strat" class="tab-pane">
+    <h3 style="font-weight: 800;">📊 Stratégie Foncière</h3>
+    <div class="vision-card glass">
+        <div style="font-weight: 800; color: var(--teal);">Acquisition Hectares</div>
+        <div style="margin: 15px 0; background: #ddd; height: 8px; border-radius: 4px;">
+            <div style="width: 40%; height: 100%; background: var(--gold); border-radius: 4px;"></div>
+        </div>
+        <span style="font-size: 0.7rem; font-weight: 800;">OBJECTIF : 10 HECTARES (40% ACCOMPLIS)</span>
+    </div>
+</div>
 
-<nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('notes-tab', this)">
-        <span class="nav-icon">📓</span> Vision
+<button class="add-float" onclick="creerNote()">+</button>
+
+<nav class="nav-bar">
+    <button class="nav-item nav-btn active" onclick="showTab('view-vision', this)">
+        <span class="nav-icon">📓</span> VISION
     </button>
-    <button class="nav-item" onclick="switchTab('strat-tab', this)">
-        <span class="nav-icon">📊</span> Stratégie
+    <button class="nav-item nav-btn" onclick="showTab('view-calendar', this)">
+        <span class="nav-icon">📅</span> AGENDA
+    </button>
+    <button class="nav-item nav-btn" onclick="showTab('view-strat', this)">
+        <span class="nav-icon">📊</span> STRATÉGIE
     </button>
 </nav>
 
 <script>
-    // Versets puissants pour l'inspiration
-    const versets = [
-        {t: "Je puis tout par celui qui me fortifie.", r: "Philippiens 4:13"},
-        {t: "L'Éternel est mon berger, je ne manquerai de rien.", r: "Psaume 23:1"},
-        {t: "Car je connais les projets que j'ai formés sur vous, projets de paix et non de malheur.", r: "Jérémie 29:11"},
-        {t: "La joie du Seigneur est votre force.", r: "Néhémie 8:10"},
-        {t: "Tout est possible à celui qui croit.", r: "Marc 9:23"}
-    ];
+    let data = JSON.parse(localStorage.getItem('regina_final_v9')) || [];
+    let m = new Date().getMonth(), y = new Date().getFullYear();
 
-    // Base de données simulée (LocalStorage fiable)
-    let visions = JSON.parse(localStorage.getItem('regina_v8')) || [];
-
-    // Navigation par onglets
-    function switchTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active-tab');
-        el.classList.add('active');
+    function showTab(id, btn) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active-tab'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active-tab');
+        btn.classList.add('active');
     }
 
-    // Ajouter une note (Vision ou Urgence)
-    function ajouterNote() {
-        let txt = prompt("Quelle est votre vision pour aujourd'hui, Mme Regina ?");
-        if (txt && txt.trim() !== "") {
-            let item = {
-                id: Date.now(),
-                texte: txt,
-                urgent: false, // On peut ajouter une option pour l'urgence plus tard
-                date: new Date().toLocaleDateString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
-            };
-            visions.unshift(item);
-            localStorage.setItem('regina_v8', JSON.stringify(visions));
+    function moveMonth(d) { m += d; if(m<0){m=11;y--;} if(m>11){m=0;y++;} renderCal(); }
+
+    function renderCal() {
+        const grid = document.getElementById('calendarGrid');
+        const title = document.getElementById('monthTitle');
+        const date = new Date(y, m);
+        title.innerText = date.toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
+        
+        let html = ['L','M','M','J','V','S','D'].map(d => `<div style="font-size:0.7rem; font-weight:800; color:var(--gold)">${d}</div>`).join('');
+        let firstDay = new Date(y, m, 1).getDay();
+        let shift = firstDay === 0 ? 6 : firstDay - 1;
+        for(let i=0; i<shift; i++) html += '<div></div>';
+        for(let d=1; d<=new Date(y, m+1, 0).getDate(); d++) {
+            let isToday = (d === new Date().getDate() && m === new Date().getMonth()) ? 'today' : '';
+            html += `<div class="cal-day ${isToday}" onclick="creerNote('${d}/${m+1}/${y}')">${d}</div>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    function creerNote(dateSpeciale) {
+        let d = dateSpeciale || new Date().toLocaleDateString('fr-FR');
+        let t = prompt("Note stratégique pour le " + d);
+        if(t) {
+            data.unshift({id: Date.now(), txt: t, date: d});
+            localStorage.setItem('regina_final_v9', JSON.stringify(data));
             renderNotes();
-            
-            // Changer le verset de manière aléatoire
-            const v = versets[Math.floor(Math.random() * versets.length)];
-            document.getElementById('verseBox').innerText = `"${v.t}"`;
-            document.getElementById('refBox').innerText = v.r;
         }
     }
 
-    // Afficher les notes
     function renderNotes() {
-        const list = document.getElementById('notes-list');
-        if (visions.length === 0) {
-            list.innerHTML = `<div style="text-align:center; margin-top:50px; color:#bbb; font-weight:600;">Votre vision est en attente, Mme Regina... ✨</div>`;
-            return;
-        }
-
-        list.innerHTML = visions.map(item => `
-            <div class="vision-card glass-panel" style="border-left: 6px solid var(--teal);">
-                ${item.urgent ? '<span class="urgent-tag">Urgent</span>' : ''}
-                <div style="font-weight: 700; font-size: 1.15rem; color: var(--dark); margin-bottom: 15px; line-height: 1.4;">${item.texte}</div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px; font-size: 0.8rem; color: #888;">
-                    <span>📍 ${item.date}</span>
-                    <button onclick="supprimer(${item.id})" style="color:var(--urgent); border:none; background:none; cursor:pointer; font-weight:700; font-size:0.75rem;">EFFACER</button>
-                </div>
+        document.getElementById('vision-list').innerHTML = data.map(n => `
+            <div class="vision-card glass">
+                <div style="font-weight: 700; margin-bottom: 10px;">${n.txt}</div>
+                <div style="font-size: 0.7rem; color: var(--gold); font-weight: 800;">📍 ${n.date}</div>
             </div>
         `).join('');
     }
 
-    // Supprimer une note
-    function supprimer(id) {
-        if(confirm("Confirmez-vous la suppression de cette vision ?")) {
-            visions = visions.filter(i => i.id !== id);
-            localStorage.setItem('regina_v8', JSON.stringify(visions));
-            renderNotes();
-        }
-    }
-
-    // Démarrage
-    renderNotes();
+    renderCal(); renderNotes();
 </script>
 </body>
 </html>
