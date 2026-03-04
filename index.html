@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Regina Neural OS</title>
+    <title>Regina Titan OS | Sacred Edition</title>
 
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1458/1458512.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,70 +14,51 @@
     <style>
         :root { 
             --gold: #c5a059; --teal: #004d40; 
-            --glass: rgba(255, 255, 255, 0.88);
+            --glass: rgba(255, 255, 255, 0.9);
             --bg-url: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000');
-            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: var(--bg-url) center/cover fixed;
-            margin: 0; padding-bottom: 120px; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #1a1a1a;
+            margin: 0; padding-bottom: 120px; transition: 0.8s ease; color: #1a1a1a;
         }
 
-        /* MENU BURGER PRO */
-        .sidebar {
-            position: fixed; top: 0; left: -100%; width: 85%; height: 100%;
-            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px);
-            z-index: 5000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); padding: 50px 30px;
-        }
+        /* SIDEBAR & MENU */
+        .sidebar { position: fixed; top: 0; left: -100%; width: 85%; height: 100%; background: white; z-index: 5000; transition: 0.4s; padding: 50px 30px; box-shadow: 20px 0 50px rgba(0,0,0,0.2); }
         .sidebar.active { left: 0; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 4999; backdrop-filter: blur(4px); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 4999; backdrop-filter: blur(5px); }
 
-        /* HEADER & STATS */
-        .header {
-            padding: 70px 25px 30px; display: flex; justify-content: space-between; align-items: flex-start;
-            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%); color: white;
-        }
-        .momentum-badge { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; border: 1px solid rgba(255,255,255,0.3); }
+        /* HEADER */
+        .header { padding: 70px 25px 30px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%); color: white; }
 
-        /* VISION CARDS (ANTI-VIDE) */
-        .glass { background: var(--glass); backdrop-filter: blur(25px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.4); box-shadow: var(--shadow); }
-        .vision-card { padding: 30px; margin: 20px; position: relative; overflow: hidden; }
-        .vision-card::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--teal); }
+        /* CARDS */
+        .glass { background: var(--glass); backdrop-filter: blur(20px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 8px 32px rgba(0,0,0,0.1); margin: 20px; }
+        .vision-card { padding: 25px; border-left: 6px solid var(--teal); position: relative; }
+        .bible-card { padding: 25px; border-left: 6px solid var(--gold); background: rgba(255, 250, 240, 0.95); }
         
-        .main-idea { outline: none; font-weight: 800; font-size: 1.4rem; color: var(--teal); margin-bottom: 12px; letter-spacing: -0.5px; }
-        .sub-note { outline: none; font-size: 1rem; color: #444; line-height: 1.6; opacity: 0.85; }
+        .main-idea { outline: none; font-weight: 800; font-size: 1.3rem; color: var(--teal); margin-bottom: 8px; }
+        .bible-ref { outline: none; font-weight: 800; font-size: 1.2rem; color: #8e6d31; font-style: italic; }
+        .sub-note { outline: none; font-size: 1rem; color: #444; line-height: 1.5; }
 
-        /* CALENDRIER DYNAMIQUE */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; padding: 20px; }
-        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 15px; font-weight: 800; font-size: 0.9rem; transition: 0.3s; }
-        .cal-day:hover { background: rgba(0,0,0,0.05); }
-        .today { background: var(--teal) !important; color: white !important; box-shadow: 0 10px 20px rgba(0,77,64,0.3); }
+        /* CALENDRIER */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; padding: 20px; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .today { background: var(--teal); color: white; }
 
-        /* BARRE DE NAVIGATION (FLOATING) */
+        /* NAVIGATION BASSE */
         .nav-bar {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 88%; height: 80px; display: flex; justify-content: space-around; align-items: center;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-radius: 35px; 
-            box-shadow: 0 15px 45px rgba(0,0,0,0.15); z-index: 4000;
+            width: 92%; height: 75px; display: flex; justify-content: space-around; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 25px; z-index: 4000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .nav-btn { border: none; background: none; color: #aaa; font-weight: 800; font-size: 0.65rem; transition: 0.3s; }
-        .nav-btn.active { color: var(--teal); transform: translateY(-3px); }
-        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 2px; }
+        .nav-btn { border: none; background: none; color: #999; font-weight: 800; font-size: 0.6rem; text-align: center; }
+        .nav-btn.active { color: var(--teal); }
+        .nav-icon { font-size: 1.4rem; display: block; margin-bottom: 2px; }
 
-        .add-btn { 
-            position: fixed; bottom: 125px; right: 25px; width: 70px; height: 70px; 
-            border-radius: 25px; background: var(--teal); color: white; border: none; 
-            font-size: 35px; box-shadow: 0 15px 30px rgba(0,77,64,0.4); z-index: 3000;
-            transition: 0.3s;
-        }
-        .add-btn:active { transform: scale(0.85); }
-
+        .add-btn { position: fixed; bottom: 120px; right: 30px; width: 65px; height: 65px; border-radius: 20px; background: var(--teal); color: white; border: none; font-size: 30px; z-index: 3000; box-shadow: 0 10px 20px rgba(0,77,64,0.3); }
         .hidden { display: none; }
-        .fade { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -85,75 +66,56 @@
 <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
 
 <div id="sidebar" class="sidebar">
-    <div style="font-size: 40px; margin-bottom: 20px;">👑</div>
-    <h2 style="font-weight: 800; color: var(--teal); margin: 0;">Regina Executive</h2>
-    <p style="color: var(--gold); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px;">V17.0 TITAN EDITION</p>
-    
-    <div style="margin: 40px 0; height: 1px; background: #eee;"></div>
-    
-    <div style="margin-bottom: 35px;">
-        <h3 style="font-size: 0.8rem; color: var(--gold); letter-spacing: 1px; font-weight: 800;">👨‍💻 DÉVELOPPEUR</h3>
-        <p style="font-weight: 800; font-size: 1.2rem; margin: 5px 0;">LOKONON Godfree</p>
-        <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">Ingénieur logiciel & Architecte de solutions visionnaires. Créateur exclusif de cet OS.</p>
-    </div>
-
-    <div>
-        <h3 style="font-size: 0.8rem; color: var(--gold); letter-spacing: 1px; font-weight: 800;">📓 À PROPOS</h3>
-        <p style="font-size: 0.9rem; line-height: 1.6; color: #444;">Un système intelligent pour capturer l'essence de votre vision foncière et spirituelle. Conçu pour la clarté et l'exécution.</p>
-    </div>
-    
-    <button onclick="toggleSidebar()" style="position: absolute; bottom: 40px; width: calc(100% - 60px); background: #f5f5f5; color: #333; border: none; padding: 18px; border-radius: 20px; font-weight: 800;">Fermer le menu</button>
+    <h2 style="color: var(--teal); font-weight: 800;">Regina Titan OS</h2>
+    <hr style="border: 0; height: 1px; background: #eee; margin: 20px 0;">
+    <p style="color: var(--gold); font-weight: 800; font-size: 0.7rem;">AUTEUR</p>
+    <p style="font-weight: 800; margin-top: 5px;">LOKONON Godfree</p>
+    <p style="font-size: 0.8rem; color: #666;">Architecte Solution.</p>
+    <button onclick="toggleSidebar()" style="margin-top: 40px; width: 100%; padding: 15px; border-radius: 12px; border: none; background: #f0f0f0; font-weight: 800;">Fermer</button>
 </div>
 
 <div class="header">
-    <div style="font-size: 1.8rem; cursor: pointer;" onclick="toggleSidebar()">☰</div>
-    <div style="text-align: center;">
-        <span class="momentum-badge" id="momentumCount">0 VISIONS CAPTURÉES</span>
-        <h2 style="margin:5px 0 0; font-size:1.5rem; font-weight:800; letter-spacing:-1px;">Regina Titan OS</h2>
-    </div>
-    <div style="font-size: 1.8rem; cursor: pointer;" onclick="changeImage()">🖼️</div>
+    <div onclick="toggleSidebar()" style="font-size: 1.5rem; cursor: pointer;">☰</div>
+    <div style="font-weight: 800; letter-spacing: 1px;">REGINA OS</div>
+    <div onclick="changeImage()" style="font-size: 1.5rem; cursor: pointer;">🖼️</div>
 </div>
 
-<div id="view-vision" class="view fade">
+<div id="v-notes" class="view">
+    <h3 style="margin-left: 25px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">📓 Vision & Projets</h3>
     <div id="vision-list"></div>
-    <div id="empty-state" style="text-align: center; padding: 100px 40px; color: white; opacity: 0.6;">
-        <p style="font-weight: 600;">"La vision est l'art de voir les choses invisibles."</p>
-        <p style="font-size: 0.8rem;">Appuyez sur + pour commencer.</p>
-    </div>
 </div>
 
-<div id="view-cal" class="view hidden fade" style="padding: 20px;">
-    <div class="glass" style="padding-bottom: 20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; padding: 25px;">
-            <button onclick="mveM(-1)" style="border:none; background:none; font-size:1.5rem; color:var(--teal); font-weight: 800;">❮</button>
-            <span id="calMonth" style="font-weight:800; font-size: 1.1rem; color: var(--teal);"></span>
-            <button onclick="mveM(1)" style="border:none; background:none; font-size:1.5rem; color:var(--teal); font-weight: 800;">❯</button>
+<div id="v-bible" class="view hidden">
+    <h3 style="margin-left: 25px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">📜 Parole & Méditation</h3>
+    <div id="bible-list"></div>
+</div>
+
+<div id="v-cal" class="view hidden" style="padding: 20px;">
+    <div class="glass">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 20px;">
+            <button onclick="mveM(-1)" style="border:none; background:none; font-size:1.5rem;">❮</button>
+            <span id="calMonth" style="font-weight:800;"></span>
+            <button onclick="mveM(1)" style="border:none; background:none; font-size:1.5rem;">❯</button>
         </div>
         <div id="calGrid" class="cal-grid"></div>
     </div>
 </div>
 
-<button class="add-btn" onclick="spawnNote()">+</button>
+<button class="add-btn" onclick="quickAdd()">+</button>
 
 <nav class="nav-bar">
-    <button class="nav-btn active" onclick="switchView('view-vision', this)">
-        <span class="nav-icon">📓</span>VISION
-    </button>
-    <button class="nav-btn" onclick="switchView('view-cal', this)">
-        <span class="nav-icon">📅</span>AGENDA
-    </button>
+    <button class="nav-btn active" onclick="showV('v-notes', this)"><span class="nav-icon">📓</span>VISION</button>
+    <button class="nav-btn" onclick="showV('v-bible', this)"><span class="nav-icon">📖</span>BIBLE</button>
+    <button class="nav-btn" onclick="showV('v-cal', this)"><span class="nav-icon">📅</span>AGENDA</button>
 </nav>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('regina_v17')) || [];
+    let dbV = JSON.parse(localStorage.getItem('regina_vision')) || [];
+    let dbB = JSON.parse(localStorage.getItem('regina_bible')) || [];
+    let curView = 'v-notes';
     let m = new Date().getMonth(), y = new Date().getFullYear();
-    const imgs = [
-        'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000',
-        'https://images.unsplash.com/photo-1444491741275-3747c53c99b4?q=80&w=2000',
-        'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=2000',
-        'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2000'
-    ];
-    let imgIdx = 0;
+    const imgs = ['https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000','https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=2000','https://images.unsplash.com/photo-1444491741275-3747c53c99b4?q=80&w=2000'];
+    let iIdx = 0;
 
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
@@ -161,81 +123,88 @@
     }
 
     function changeImage() {
-        imgIdx = (imgIdx + 1) % imgs.length;
-        document.body.style.backgroundImage = `url('${imgs[imgIdx]}')`;
+        iIdx = (iIdx + 1) % imgs.length;
+        document.body.style.backgroundImage = `url('${imgs[iIdx]}')`;
     }
 
-    function switchView(id, btn) {
+    function showV(id, b) {
         document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.remove('hidden');
-        btn.classList.add('active');
-        if(id === 'view-cal') renderCal();
+        b.classList.add('active');
+        curView = id;
+        if(id === 'v-cal') renderCal();
     }
 
-    function spawnNote(dateStr) {
-        let t = prompt("L'idée maîtresse :");
-        if(!t) return;
-        let st = prompt("Précisions stratégiques :");
-        db.unshift({id: Date.now(), t: t, st: st || "Aucune précision...", d: dateStr || new Date().toLocaleDateString('fr-FR')});
-        save();
-    }
-
-    function save() {
-        localStorage.setItem('regina_v17', JSON.stringify(db));
-        renderNotes();
-    }
-
-    function renderNotes() {
-        const list = document.getElementById('vision-list');
-        const empty = document.getElementById('empty-state');
-        const count = document.getElementById('momentumCount');
-        
-        count.innerText = `${db.length} VISION${db.length > 1 ? 'S' : ''} CAPTURÉE${db.length > 1 ? 'S' : ''}`;
-        
-        if(db.length === 0) {
-            empty.style.display = 'block';
-            list.innerHTML = '';
+    function quickAdd(dStr) {
+        let date = dStr || new Date().toLocaleDateString('fr-FR');
+        if(curView === 'v-bible') {
+            let ref = prompt("Référence biblique (ex: Psaumes 23:1) :");
+            if(!ref) return;
+            let note = prompt("Votre méditation :");
+            dbB.unshift({id: Date.now(), ref, note: note || "...", date});
+            localStorage.setItem('regina_bible', JSON.stringify(dbB));
+            renderBible();
         } else {
-            empty.style.display = 'none';
-            list.innerHTML = db.map(v => `
-                <div class="vision-card glass fade">
-                    <div class="main-idea" contenteditable="true" onblur="upd(${v.id},'t',this)">${v.t}</div>
-                    <div class="sub-note" contenteditable="true" onblur="upd(${v.id},'st',this)">${v.st}</div>
-                    <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; font-weight:800;">
-                        <span style="color:var(--gold); display:flex; align-items:center; gap:5px;">📍 ${v.d}</span>
-                        <span onclick="del(${v.id})" style="color:#ff5e5e; cursor:pointer; padding: 5px;">EFFACER</span>
-                    </div>
-                </div>
-            `).join('');
+            let t = prompt("Titre de la vision :");
+            if(!t) return;
+            let s = prompt("Détails :");
+            dbV.unshift({id: Date.now(), t, s: s || "...", date});
+            localStorage.setItem('regina_vision', JSON.stringify(dbV));
+            renderVision();
         }
     }
 
-    function upd(id, f, el) {
-        let n = db.find(x => x.id === id);
-        if(n) { n[f] = el.innerText; localStorage.setItem('regina_v17', JSON.stringify(db)); }
+    function renderVision() {
+        document.getElementById('vision-list').innerHTML = dbV.map(v => `
+            <div class="vision-card glass">
+                <div class="main-idea" contenteditable="true" onblur="updV(${v.id},'t',this)">${v.t}</div>
+                <div class="sub-note" contenteditable="true" onblur="updV(${v.id},'s',this)">${v.s}</div>
+                <div style="margin-top:15px; font-size:0.7rem; font-weight:800; color:var(--gold); display:flex; justify-content:space-between;">
+                    <span>📍 ${v.date}</span>
+                    <span onclick="delV(${v.id})" style="color:red; cursor:pointer;">SUPPRIMER</span>
+                </div>
+            </div>
+        `).join('');
     }
 
-    function del(id) { if(confirm("Voulez-vous supprimer cette vision ?")) { db = db.filter(x => x.id !== id); save(); } }
+    function renderBible() {
+        document.getElementById('bible-list').innerHTML = dbB.map(b => `
+            <div class="bible-card glass">
+                <div class="bible-ref" contenteditable="true" onblur="updB(${b.id},'ref',this)">${b.ref}</div>
+                <div class="sub-note" contenteditable="true" onblur="updB(${b.id},'note',this)">${b.note}</div>
+                <div style="margin-top:15px; font-size:0.7rem; font-weight:800; color:var(--gold); display:flex; justify-content:space-between;">
+                    <span>🙏 ${b.date}</span>
+                    <span onclick="delB(${b.id})" style="color:red; cursor:pointer;">SUPPRIMER</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updV(id, f, el) { let n = dbV.find(x => x.id === id); if(n) { n[f] = el.innerText; localStorage.setItem('regina_vision', JSON.stringify(dbV)); } }
+    function updB(id, f, el) { let n = dbB.find(x => x.id === id); if(n) { n[f] = el.innerText; localStorage.setItem('regina_bible', JSON.stringify(dbB)); } }
+    function delV(id) { if(confirm("Supprimer ?")) { dbV = dbV.filter(x => x.id !== id); localStorage.setItem('regina_vision', JSON.stringify(dbV)); renderVision(); } }
+    function delB(id) { if(confirm("Supprimer ?")) { dbB = dbB.filter(x => x.id !== id); localStorage.setItem('regina_bible', JSON.stringify(dbB)); renderBible(); } }
 
     function renderCal() {
         const grid = document.getElementById('calGrid');
         const d = new Date(y, m);
         document.getElementById('calMonth').innerText = d.toLocaleString('fr-FR', {month:'long', year:'numeric'}).toUpperCase();
-        let html = ['LU','MA','ME','JE','VE','SA','DI'].map(x => `<div style="font-size:0.65rem; font-weight:800; color:var(--gold); opacity:0.8;">${x}</div>`).join('');
-        let first = new Date(y, m, 1).getDay();
-        let shift = (first === 0) ? 6 : first - 1;
-        for(let i=0; i<shift; i++) html += '<div></div>';
+        let h = ['LU','MA','ME','JE','VE','SA','DI'].map(x => `<div style="font-size:0.6rem; font-weight:800; color:var(--gold);">${x}</div>`).join('');
+        let f = new Date(y, m, 1).getDay();
+        let s = (f === 0) ? 6 : f - 1;
+        for(let i=0; i<s; i++) h += '<div></div>';
         for(let i=1; i<=new Date(y, m+1, 0).getDate(); i++) {
-            let isToday = (i === new Date().getDate() && m === new Date().getMonth() && y === new Date().getFullYear()) ? 'today' : '';
-            html += `<div class="cal-day ${isToday}" onclick="spawnNote('${i}/${m+1}/${y}')">${i}</div>`;
+            let today = (i === new Date().getDate() && m === new Date().getMonth()) ? 'today' : '';
+            h += `<div class="cal-day ${today}" onclick="quickAdd('${i}/${m+1}/${y}')">${i}</div>`;
         }
-        grid.innerHTML = html;
+        grid.innerHTML = h;
     }
 
     function mveM(dir) { m += dir; if(m<0){m=11;y--;} if(m>11){m=0;y++;} renderCal(); }
 
-    renderNotes();
+    renderVision();
+    renderBible();
 </script>
 </body>
 </html>
