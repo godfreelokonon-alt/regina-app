@@ -2,181 +2,248 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regina Vision : Godfree Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Regina Titan OS</title>
+
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1458/1458512.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         :root { 
             --gold: #c5a059; --teal: #004d40; --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.88); --shadow: rgba(0,0,0,0.1);
+            --glass: rgba(255, 255, 255, 0.85); --shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
             --bg-img: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000');
         }
-        
+
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: var(--bg-img) center/cover fixed;
-            margin: 0; padding-bottom: 110px; color: #1a2a2a;
+            margin: 0; padding-bottom: 120px; transition: 0.5s; overflow-x: hidden;
         }
 
-        .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 15px 35px var(--shadow); border-radius: 30px; }
-        .fade-in { animation: fadeInUp 0.6s ease-out; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* HEADER */
+        /* NEUMORPHISM & GLASS */
+        .glass { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.4); border-radius: 35px; }
+        
+        /* TITAN HEADER */
         .header {
             background: linear-gradient(135deg, rgba(0, 77, 64, 0.95), rgba(10, 17, 17, 0.95));
-            color: white; padding: 50px 25px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+            color: white; padding: 70px 30px 40px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* NAVIGATION BASSE */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 90px;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top-left-radius: 35px; border-top-right-radius: 35px; z-index: 2000;
+        /* THEME SELECTOR */
+        .theme-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 15px; display: none; }
+        .theme-dot { height: 30px; border-radius: 10px; cursor: pointer; border: 2px solid white; }
+
+        /* SILICON VALLEY CARDS (AVEC NIVEAU D'URGENCE) */
+        .vision-card { 
+            padding: 25px; margin-bottom: 25px; position: relative; 
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateZ(0);
         }
-        .nav-btn { border: none; background: none; color: #aaa; font-weight: 800; font-size: 0.65rem; cursor: pointer; transition: 0.3s; }
-        .nav-btn.active { color: var(--teal); transform: translateY(-3px); }
-        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+        .vision-card:active { transform: scale(0.95); }
+        .priority-dot { position: absolute; top: 20px; right: 20px; width: 12px; height: 12px; border-radius: 50%; }
 
-        /* SECTIONS */
-        .tab-pane { display: none; padding: 25px; }
-        .active-tab { display: block; }
+        /* TYPOGRAPHIE EXÉCUTIVE */
+        .main-idea { outline: none; font-weight: 800; font-size: 1.3rem; color: var(--teal); line-height: 1.2; }
+        .sub-note { outline: none; font-weight: 400; font-size: 0.95rem; color: #666; margin-top: 10px; line-height: 1.5; }
 
-        /* CARDS */
-        .vision-card { padding: 20px; margin-bottom: 15px; border-left: 6px solid var(--teal); position: relative; }
-        .editable { outline: none; font-weight: 700; font-size: 1.1rem; }
+        /* CALENDRIER NEXT-GEN */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 18px; font-weight: 700; transition: 0.3s; }
+        .today { background: var(--teal); color: white; box-shadow: 0 10px 25px rgba(0,77,64,0.3); }
 
-        /* A PROPOS (DESIGN GODFREE) */
-        .about-card { text-align: center; padding: 40px 20px; }
-        .dev-avatar { width: 100px; height: 100px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; border: 4px solid var(--gold); }
+        /* NAV BAR (ULTRA MODERN) */
+        .nav-bar {
+            position: fixed; bottom: 25px; left: 5%; width: 90%; height: 80px;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
+            border-radius: 30px; display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); z-index: 2000;
+        }
+        .nav-item { border: none; background: none; color: #bbb; cursor: pointer; transition: 0.3s; text-align: center; }
+        .nav-item.active { color: var(--teal); transform: translateY(-5px); }
+        .nav-icon { font-size: 1.6rem; display: block; }
+        .nav-text { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; margin-top: 4px; }
 
-        .add-float { position: fixed; bottom: 105px; right: 25px; width: 65px; height: 65px; border-radius: 20px; background: var(--teal); color: white; border: none; font-size: 30px; box-shadow: 0 10px 20px rgba(0,77,64,0.4); z-index: 1000; cursor: pointer; }
+        .add-float { 
+            position: fixed; bottom: 120px; right: 30px; width: 65px; height: 65px; 
+            border-radius: 20px; background: var(--teal); color: white; border: none; 
+            font-size: 35px; box-shadow: 0 15px 30px rgba(0,77,64,0.3); z-index: 1000; 
+        }
+
+        /* PROGRESS BAR SAGESSE */
+        .wisdom-bar { height: 4px; background: rgba(255,255,255,0.2); margin-top: 15px; border-radius: 2px; overflow: hidden; }
+        #wisdom-progress { height: 100%; background: var(--gold); width: 0%; transition: 1s; }
     </style>
 </head>
-<body>
+<body class="theme-emerald">
 
 <div class="header">
-    <div style="display:flex; align-items:center; gap:15px;">
-        <div style="font-size:35px;">👑</div>
-        <div>
-            <p style="margin:0; color:var(--gold); font-size:0.75rem; font-weight:800; text-transform:uppercase;">Executive Vision OS</p>
-            <h2 style="margin:0; font-size:1.4rem;">Mme Regina LOKONON</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div style="font-size:45px;">👑</div>
+            <div>
+                <h2 style="margin:0; font-size:1.6rem; letter-spacing:-1px;">Regina Titan OS</h2>
+                <p style="margin:0; color:var(--gold); font-size:0.75rem; font-weight:800; text-transform:uppercase;">Visionary Intelligence</p>
+                <div class="wisdom-bar"><div id="wisdom-progress"></div></div>
+            </div>
         </div>
+        <button onclick="toggleThemes()" style="background:none; border:none; font-size:1.6rem; cursor:pointer;">🎨</button>
+    </div>
+    <div id="themeGrid" class="theme-grid">
+        <div class="theme-dot" style="background:#004d40" onclick="setT('emerald')"></div>
+        <div class="theme-dot" style="background:#1565c0" onclick="setT('sapphire')"></div>
+        <div class="theme-dot" style="background:#c62828" onclick="setT('ruby')"></div>
+        <div class="theme-dot" style="background:#1a1a1a" onclick="setT('obsidian')"></div>
+        <div class="theme-dot" style="background:#ff8f00" onclick="setT('sunset')"></div>
     </div>
 </div>
 
-<div id="view-vision" class="tab-pane active-tab fade-in">
-    <h3 style="font-weight:800;">📜 Vision & Agenda</h3>
+<div id="v-notes" class="tab-pane active" style="padding:30px;">
     <div id="vision-list"></div>
 </div>
 
-<div id="view-cal" class="tab-pane fade-in">
-    <div class="glass" style="padding:20px; text-align:center;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:800; color:var(--teal);">
-            <button onclick="moveM(-1)" style="border:none; background:none; font-size:1.2rem;">❮</button>
-            <span id="calTitle">Mars 2026</span>
-            <button onclick="moveM(1)" style="border:none; background:none; font-size:1.2rem;">❯</button>
+<div id="v-cal" class="tab-pane" style="padding:30px; display:none;">
+    <div class="glass" style="padding:25px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; font-weight:800;">
+            <button onclick="changeM(-1)" style="border:none; background:none; font-size:1.5rem;">❮</button>
+            <span id="calMonth">Mars 2026</span>
+            <button onclick="changeM(1)" style="border:none; background:none; font-size:1.5rem;">❯</button>
         </div>
-        <div id="calGrid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:10px;"></div>
+        <div id="calGrid" class="cal-grid"></div>
     </div>
 </div>
 
-<div id="view-strat" class="tab-pane fade-in">
-    <h3 style="font-weight:800;">📊 Objectifs Stratégiques</h3>
-    <div class="vision-card glass">
-        <div style="font-weight:800; color:var(--teal);">Acquisition Foncière</div>
-        <div style="background:#ddd; height:10px; border-radius:5px; margin:15px 0; overflow:hidden;">
-            <div style="width:40%; height:100%; background:var(--gold);"></div>
+<div id="v-strat" class="tab-pane" style="padding:30px; display:none;">
+    <div class="vision-card glass" style="border-left: 10px solid var(--gold);">
+        <div class="main-idea">Stratégie Hectares</div>
+        <div style="background:#eee; height:12px; border-radius:6px; margin:20px 0; overflow:hidden;">
+            <div style="width:45%; height:100%; background:var(--gold); border-radius:6px;"></div>
         </div>
-        <span style="font-size:0.7rem; font-weight:800; color:#666;">PROGRES : 4/10 HECTARES</span>
+        <p class="sub-note">Focus actuel : Négociation foncière zone A.</p>
     </div>
 </div>
 
-<div id="view-about" class="tab-pane fade-in">
-    <div class="glass about-card">
-        <div class="dev-avatar">👨‍💻</div>
+<div id="v-dev" class="tab-pane" style="padding:30px; display:none;">
+    <div class="glass" style="text-align:center; padding:50px 20px;">
+        <div style="font-size:60px; margin-bottom:20px;">👨‍💻</div>
         <h2 style="margin:0; font-weight:800; color:var(--teal);">LOKONON Godfree</h2>
-        <p style="color:var(--gold); font-weight:700; text-transform:uppercase; font-size:0.8rem; margin-top:5px;">Développeur Visionnaire</p>
-        <div style="margin:30px 0; height:1px; background:rgba(0,0,0,0.05);"></div>
-        <p style="font-size:0.95rem; line-height:1.6; color:#444;">
-            Cette interface exclusive a été conçue et développée avec précision pour Mme Regina LOKONON.
-        </p>
-        <p style="font-size:0.8rem; color:#888; margin-top:40px;">Version 11.0 Gold Edition • 2026</p>
+        <p style="color:var(--gold); font-weight:800; letter-spacing:2px; font-size:0.7rem;">TITAN ARCHITECT</p>
+        <div style="height:1px; background:#eee; margin:30px auto; width:50%;"></div>
+        <p style="font-size:0.95rem; line-height:1.7; font-style:italic; color:#555;">"Bâtir l'avenir, une ligne de code à la fois."</p>
     </div>
 </div>
 
-<button class="add-float" onclick="ajouterNote()">+</button>
+<button class="add-float" onclick="addVision()">+</button>
 
-<nav class="bottom-nav">
-    <button class="nav-btn active" onclick="showTab('view-vision', this)"><span class="nav-icon">📓</span>VISION</button>
-    <button class="nav-btn" onclick="showTab('view-cal', this)"><span class="nav-icon">📅</span>AGENDA</button>
-    <button class="nav-btn" onclick="showTab('view-strat', this)"><span class="nav-icon">📊</span>STRAT</button>
-    <button class="nav-btn" onclick="showTab('view-about', this)"><span class="nav-icon">👨‍💻</span>AUTEUR</button>
+<nav class="nav-bar">
+    <button class="nav-item active" onclick="tab('v-notes', this)">
+        <span class="nav-icon">📓</span><span class="nav-text">Vision</span>
+    </button>
+    <button class="nav-item" onclick="tab('v-cal', this)">
+        <span class="nav-icon">📅</span><span class="nav-text">Agenda</span>
+    </button>
+    <button class="nav-item" onclick="tab('v-strat', this)">
+        <span class="nav-icon">📊</span><span class="nav-text">Strat</span>
+    </button>
+    <button class="nav-item" onclick="tab('v-dev', this)">
+        <span class="nav-icon">👤</span><span class="nav-text">Auteur</span>
+    </button>
 </nav>
 
 <script>
-    let visions = JSON.parse(localStorage.getItem('regina_final_v11')) || [];
-    let curM = new Date().getMonth(), curY = new Date().getFullYear();
+    let visions = JSON.parse(localStorage.getItem('regina_titan_v14')) || [];
+    let m = new Date().getMonth(), y = new Date().getFullYear();
 
-    function showTab(id, b) {
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active-tab'));
-        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active-tab');
-        b.classList.add('active');
-        if(id === 'view-cal') renderCal();
+    function tab(id, el) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).style.display = 'block';
+        el.classList.add('active');
+        if(id === 'v-cal') renderCal();
     }
 
-    function ajouterNote(dStr) {
-        let txt = prompt("Saisissez votre vision :");
-        if(txt) {
-            visions.unshift({id:Date.now(), txt:txt, d: dStr || new Date().toLocaleDateString('fr-FR')});
-            save();
-        }
+    function toggleThemes() { 
+        let g = document.getElementById('themeGrid');
+        g.style.display = (g.style.display === 'grid') ? 'none' : 'grid';
+    }
+
+    function setT(t) { 
+        document.body.className = 'theme-' + t; 
+        toggleThemes();
+    }
+
+    function addVision(dateStr) {
+        let title = prompt("Titre de la vision :");
+        if(!title) return;
+        let note = prompt("Détails stratégiques :");
+        let priority = prompt("Priorité (1: Haute, 2: Moyenne, 3: Basse) :");
+        let colors = ['#ff5252', '#ffab40', '#4caf50'];
+        
+        visions.unshift({
+            id: Date.now(),
+            t: title,
+            st: note || "Précisez votre pensée...",
+            d: dateStr || new Date().toLocaleDateString('fr-FR'),
+            p: colors[(priority-1)] || colors[1]
+        });
+        save();
     }
 
     function save() {
-        localStorage.setItem('regina_final_v11', JSON.stringify(visions));
+        localStorage.setItem('regina_titan_v14', JSON.stringify(visions));
         renderList();
+        updateWisdom();
     }
 
     function renderList() {
         document.getElementById('vision-list').innerHTML = visions.map(v => `
             <div class="vision-card glass fade-in">
-                <div class="editable" contenteditable="true" onblur="updateNote(${v.id}, this)">${v.txt}</div>
-                <div style="margin-top:12px; font-size:0.7rem; font-weight:800; color:var(--gold); display:flex; justify-content:space-between;">
-                    <span>📍 ${v.d}</span>
-                    <span onclick="del(${v.id})" style="color:red; cursor:pointer;">EFFACER</span>
+                <div class="priority-dot" style="background:${v.p}"></div>
+                <div class="main-idea" contenteditable="true" onblur="update(${v.id}, 't', this)">${v.t}</div>
+                <div class="sub-note" contenteditable="true" onblur="update(${v.id}, 'st', this)">${v.st}</div>
+                <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.75rem; font-weight:800; color:var(--gold);">📍 ${v.d}</span>
+                    <button onclick="del(${v.id})" style="border:none; background:none; color:#ff5252; font-weight:800; font-size:0.7rem; cursor:pointer;">SUPPRIMER</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function updateNote(id, el) {
+    function update(id, field, el) {
         let n = visions.find(x => x.id === id);
-        if(n) { n.txt = el.innerText; localStorage.setItem('regina_final_v11', JSON.stringify(visions)); }
+        if(n) { n[field] = el.innerText; localStorage.setItem('regina_titan_v14', JSON.stringify(visions)); updateWisdom(); }
     }
 
-    function del(id) { if(confirm("Supprimer ?")) { visions = visions.filter(x => x.id !== id); save(); } }
+    function del(id) { if(confirm("Archiver cette vision ?")) { visions = visions.filter(x => x.id !== id); save(); } }
+
+    function updateWisdom() {
+        let progress = Math.min(visions.length * 10, 100);
+        document.getElementById('wisdom-progress').style.width = progress + '%';
+    }
 
     function renderCal() {
         const grid = document.getElementById('calGrid');
-        const dt = new Date(curY, curM);
-        document.getElementById('calTitle').innerText = dt.toLocaleString('fr-FR', {month:'long', year:'numeric'});
-        let html = ['L','M','M','J','V','S','D'].map(day => `<div style="font-weight:800; font-size:0.7rem; color:var(--gold);">${day}</div>`).join('');
-        let first = new Date(curY, curM, 1).getDay();
+        const d = new Date(y, m);
+        document.getElementById('calMonth').innerText = d.toLocaleString('fr-FR', {month:'long', year:'numeric'});
+        let html = ['L','M','M','J','V','S','D'].map(x => `<div style="font-size:0.75rem; font-weight:800; color:var(--gold);">${x}</div>`).join('');
+        let first = new Date(y, m, 1).getDay();
         let shift = first === 0 ? 6 : first - 1;
         for(let i=0; i<shift; i++) html += '<div></div>';
-        for(let i=1; i<=new Date(curY, curM+1, 0).getDate(); i++) {
-            let isToday = (i === new Date().getDate() && curM === new Date().getMonth()) ? 'background:var(--teal); color:white; border-radius:10px;' : '';
-            html += `<div style="padding:10px; cursor:pointer; font-weight:600; ${isToday}" onclick="ajouterNote('${i}/${curM+1}/${curY}')">${i}</div>`;
+        for(let i=1; i<=new Date(y, m+1, 0).getDate(); i++) {
+            let isToday = (i === new Date().getDate() && m === new Date().getMonth()) ? 'today' : '';
+            html += `<div class="cal-day ${isToday}" onclick="addVision('${i}/${m+1}/${y}')">${i}</div>`;
         }
         grid.innerHTML = html;
     }
 
-    function moveM(dir) { curM += dir; if(curM<0){curM=11;curY--;} if(curM>11){curM=0;curY++;} renderCal(); }
+    function changeM(dir) { m += dir; if(m<0){m=11;y--;} if(m>11){m=0;y++;} renderCal(); }
 
     renderList();
+    updateWisdom();
 </script>
 </body>
 </html>
