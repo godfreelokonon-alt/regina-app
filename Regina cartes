@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Regina cartes  | Togo Carto</title>
+
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1458/1458512.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        :root { --gold: #c5a059; --teal: #004d40; --glass: rgba(255, 255, 255, 0.94); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover fixed; margin: 0; padding-bottom: 110px; color: #1a1a1a; }
+        
+        .header { padding: 60px 25px 20px; background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%); color: white; text-align: center; }
+        .bible-quote { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--gold); font-style: italic; margin-top: 8px; min-height: 40px; }
+
+        .sidebar { position: fixed; top: 0; left: -100%; width: 85%; height: 100%; background: white; z-index: 5000; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); padding: 40px; }
+        .sidebar.active { left: 0; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 4999; backdrop-filter: blur(5px); }
+
+        .glass { background: var(--glass); backdrop-filter: blur(25px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin: 20px; overflow: hidden; }
+        .card { padding: 25px; border-left: 5px solid var(--teal); }
+        .tag { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 10px; display: inline-block; margin-bottom: 10px; }
+        .tag-v { background: #e0f2f1; color: var(--teal); }
+        .tag-b { background: #fff8e1; color: #8e6d31; border-left: 5px solid var(--gold); }
+
+        /* CARTO TOGO STYLE */
+        #map-container { height: 500px; width: 100%; }
+        .map-controls { position: absolute; top: 15px; right: 15px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+        .map-btn { background: white; border: none; padding: 10px 15px; border-radius: 12px; font-weight: 800; font-size: 0.7rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); color: var(--teal); }
+
+        .nav-bar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; height: 75px; display: flex; justify-content: space-around; align-items: center; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border-radius: 30px; z-index: 4000; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .nav-btn { border: none; background: none; color: #bbb; font-weight: 800; font-size: 0.6rem; transition: 0.3s; }
+        .nav-btn.active { color: var(--teal); transform: translateY(-3px); }
+        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 2px; }
+
+        .add-btn { position: fixed; bottom: 115px; right: 25px; width: 65px; height: 65px; border-radius: 20px; background: var(--teal); color: white; border: none; font-size: 30px; z-index: 3000; box-shadow: 0 10px 25px rgba(0,77,64,0.4); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+<div id="sidebar" class="sidebar">
+    <div style="font-size: 40px;">🇹🇬</div>
+    <h2 style="color: var(--teal); font-weight: 800; margin: 10px 0;">Regina OS</h2>
+    <p style="color: var(--gold); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px;">TOGO CARTOGRAPHY EDITION</p>
+    <hr style="border:0; height:1px; background:#eee; margin:25px 0;">
+    <p style="font-size: 0.9rem; line-height: 1.6; color:#555;">Gérez vos terres et votre foi depuis le Togo. Architecture signée Godfree.</p>
+    <button onclick="toggleSidebar()" style="margin-top: 30px; width: 100%; padding: 15px; border-radius: 15px; background: var(--teal); color: white; border:none; font-weight: 800;">Fermer</button>
+</div>
+
+<div class="header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div onclick="toggleSidebar()" style="font-size: 1.8rem; cursor: pointer;">☰</div>
+        <div style="font-weight: 800; letter-spacing: 2px;">REGINA TITAN</div>
+        <div style="font-size: 1.8rem; opacity: 0;">🖼️</div>
+    </div>
+    <div id="dynamic-bible" class="bible-quote"></div>
+</div>
+
+<div id="v-main" class="view"><div id="main-list"></div></div>
+
+<div id="v-carto" class="view hidden">
+    <div class="glass" style="position: relative;">
+        <div id="map-container"></div>
+        <div class="map-controls">
+            <button class="map-btn" onclick="toggleLayer()">🛰️ SATELLITE</button>
+            <button class="map-btn" onclick="centerTogo()">📍 LOMÉ</button>
+        </div>
+    </div>
+    <p style="text-align:center; font-size:0.75rem; font-weight:800; color:white; padding: 0 30px;">
+        Faites un appui long pour marquer un terrain au Togo.
+    </p>
+</div>
+
+<div id="v-cal" class="view hidden">
+    <div class="glass"><div id="calGrid" class="cal-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; padding: 20px;"></div></div>
+</div>
+
+<button class="add-btn" onclick="askType()">+</button>
+
+<nav class="nav-bar">
+    <button class="nav-btn active" onclick="showV('v-main', this)"><span class="nav-icon">📜</span>FLUX</button>
+    <button class="nav-btn" onclick="showV('v-carto', this)"><span class="nav-icon">🗺️</span>CARTO</button>
+    <button class="nav-btn" onclick="showV('v-cal', this)"><span class="nav-icon">📅</span>AGENDA</button>
+</nav>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('regina_v22')) || [];
+    let map, isSat = false;
+    const verses = ["\"Confie tes projets à l'Éternel.\"", "\"Je puis tout par celui qui me fortifie.\"", "\"Fortifie-toi et prends courage.\""];
+
+    // CONFIGURATION TOGO (Lomé)
+    function initMap() {
+        if(map) return;
+        map = L.map('map-container', { zoomControl: false }).setView([6.13, 1.22], 13); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        map.on('contextmenu', (e) => {
+            let n = prompt("Nom du terrain / Vision au Togo :");
+            if(n) {
+                L.marker([e.latlng.lat, e.latlng.lng]).addTo(map).bindPopup(n).openPopup();
+                db.unshift({id: Date.now(), type:'vision', t: "Terrain Togo: "+n, c: "Coordonnées: "+e.latlng.lat.toFixed(4)+", "+e.latlng.lng.toFixed(4), d: new Date().toLocaleDateString(), lat: e.latlng.lat, lng: e.latlng.lng});
+                save();
+            }
+        });
+        db.filter(i => i.lat).forEach(i => L.marker([i.lat, i.lng]).addTo(map).bindPopup(i.t));
+    }
+
+    function centerTogo() { map.setView([6.13, 1.22], 13); }
+
+    function toggleLayer() {
+        isSat = !isSat;
+        let url = isSat ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}' : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        L.tileLayer(url).addTo(map);
+    }
+
+    function showV(id, b) {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.remove('hidden');
+        b.classList.add('active');
+        if(id === 'v-carto') { setTimeout(() => { initMap(); map.invalidateSize(); }, 300); }
+    }
+
+    function askType() {
+        let choice = confirm("OK pour VISION 🔭\nANNULER pour BIBLE 📖");
+        let t = prompt(choice ? "Titre Vision :" : "Référence Bible :");
+        if(!t) return;
+        db.unshift({id: Date.now(), type: choice?'vision':'bible', t, c: "...", d: new Date().toLocaleDateString()});
+        save();
+    }
+
+    function save() { localStorage.setItem('regina_v22', JSON.stringify(db)); render(); }
+
+    function render() {
+        document.getElementById('main-list').innerHTML = db.map(i => `
+            <div class="glass card">
+                <div class="tag ${i.type === 'vision' ? 'tag-v' : 'tag-b'}">${i.type === 'vision' ? '🔭 Togo Vision' : '📖 Parole'}</div>
+                <div class="title" contenteditable="true" onblur="upd(${i.id},'t',this)">${i.t}</div>
+                <div class="content" contenteditable="true" onblur="upd(${i.id},'c',this)">${i.c}</div>
+                <div style="margin-top:15px; font-size:0.7rem; font-weight:800; opacity:0.5; display:flex; justify-content:space-between;">
+                    <span>📍 ${i.d}</span>
+                    <span onclick="del(${i.id})" style="color:red;">EFFACER</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function upd(id, f, el) { let n = db.find(x => x.id === id); if(n) { n[f] = el.innerText; localStorage.setItem('regina_v22', JSON.stringify(db)); } }
+    function del(id) { if(confirm("Supprimer ?")) { db = db.filter(x => x.id !== id); save(); } }
+
+    document.getElementById('dynamic-bible').innerText = verses[Math.floor(Math.random()*verses.length)];
+    render();
+</script>
+</body>
+</html>
